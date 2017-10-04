@@ -48,7 +48,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private static final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 11;
     private static final int PICK_PICTURE_REQUEST = 0;
 
-    private View mLayout;
+//    private View mLayout;
     public static final String LOG_TAG = "EditorActivity";
 
     private boolean mItemHasChanged = false;
@@ -344,8 +344,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     galleryIntent();
                 }else {
-//                    Toast.makeText(this, "R.string.err_external_storage_permissions", Toast.LENGTH_LONG).show();
-                   Snackbar.make(mLayout , "err_external_storage_permissions", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+               Toast.makeText(this, "R.string.err_external_storage_permissions", Toast.LENGTH_LONG).show();
+//                   Snackbar.make(mLayout , "err_external_storage_permissions", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         }}
 
