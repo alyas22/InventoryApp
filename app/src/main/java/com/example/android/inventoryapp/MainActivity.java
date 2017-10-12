@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,11 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.inventoryapp.data.Contract.InventoryEntry;
-import com.example.android.inventoryapp.data.DBHelper;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     ListView listView;
-    private DBHelper mDbHelper;
+    public static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int INVENTORY_LOADER = 0;
     InventoryCursorAdapter mCursorAdapter;
 
@@ -46,12 +44,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class);
                 startActivity(intent);
             }
         });
+
+        View emptyView = findViewById(R.id.empty_view);
+        listView.setEmptyView(emptyView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -61,26 +60,35 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
-//        mDbHelper = new DBHelper(this);
 
     }
-    private void insertItem() {
+
+    public void fullScreenImage(Uri image) {
+
+        Intent fullScreenIntent = new Intent(this, FullScreenImage.class);
+        fullScreenIntent.setData(image);
+        startActivity(fullScreenIntent);
+
+    }
+
+    private void insertItem1() {
 
         ContentValues values = new ContentValues();
-        values.put(InventoryEntry.COLUMN_NAME, "Toto");
+        values.put(InventoryEntry.COLUMN_NAME, "Item");
         values.put(InventoryEntry.COLUMN_PRICE, 15);
-        values.put(InventoryEntry.COLUMN_QUANTITY, 0);
-        values.put(InventoryEntry.COLUMN_QUANTITY, "android.resource://"+ getPackageName()+"/drawable/ic_store");
+        values.put(InventoryEntry.COLUMN_QUANTITY, 1);
+        values.put(InventoryEntry.COLUMN_IMAGE, "android.resource://" + getPackageName() + "/drawable/ic_photo");
 
         Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
     }
-    private void deleteAllItem() {
+
+    private void deleteAllItems() {
         int rowsDeleted = getContentResolver().delete(InventoryEntry.CONTENT_URI, null, null);
         Log.v("MainActivity", rowsDeleted + " rows deleted from Inventory database");
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -90,11 +98,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         switch (item.getItemId()) {
             case R.id.action_insert_dummy_data:
-                insertItem();
+                insertItem1();
                 return true;
             case R.id.action_delete_all_entries:
-                deleteAllItem();
-                return true;}
+                deleteAllItems();
+                return true;
+            case R.id.action_info:
+                Intent intent = new Intent(MainActivity.this, Info.class);
+                startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
 
     }
@@ -114,12 +126,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 null,
                 null,
                 null);
-           }
+    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
-
     }
 
     @Override

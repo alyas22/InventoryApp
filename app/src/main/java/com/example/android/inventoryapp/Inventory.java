@@ -12,9 +12,7 @@ public class Inventory {
     private String mImage;
 
 
-
-
-    public Inventory(String Name, String Price, String Quantity, String Image ) {
+    public Inventory(String Name, String Price, String Quantity, String Image) {
         mName = Name;
         mPrice = Price;
         mQuantity = Quantity;
@@ -22,7 +20,7 @@ public class Inventory {
     }
 
 
-    public  String getName() {
+    public String getName() {
         return mName;
     }
 

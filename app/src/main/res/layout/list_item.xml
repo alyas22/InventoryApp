@@ -42,17 +42,7 @@
         android:layout_alignParentRight="true"
         android:gravity="end|center_vertical"
         android:paddingTop="16dp">
-        <!--<TextView-->
-            <!--android:id="@+id/item"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--tools:text="repeat" />-->
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_toRightOf="@+id/item"-->
-            <!--android:src="@drawable/ic_store"/>-->
+
         <TextView
             android:id="@+id/quantity_item"
             android:layout_width="wrap_content"
@@ -66,14 +56,12 @@
         <ImageView
             android:id="@+id/sale_image"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:paddingLeft="8dp"
             android:layout_alignParentRight="true"
             android:focusable="false"
-            android:src="@drawable/ic_store"
+            android:src="@drawable/ic_local_grocery_store_black_24dp"
             android:focusableInTouchMode="false" />
-
-
     </RelativeLayout>
 
 </LinearLayout>

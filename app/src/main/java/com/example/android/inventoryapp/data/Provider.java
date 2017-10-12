@@ -147,16 +147,16 @@ public class Provider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case INVENTORY:
-                return updatePet(uri, contentValues, selection, selectionArgs);
+                return updateItem(uri, contentValues, selection, selectionArgs);
             case INVENTORY_ID:
                 selection = InventoryEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return updatePet(uri, contentValues, selection, selectionArgs);
+                return updateItem(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);
         }
     }
-    private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    private int updateItem(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 
         if (values.containsKey(InventoryEntry.COLUMN_NAME)) {
             String name = values.getAsString(InventoryEntry.COLUMN_NAME);
