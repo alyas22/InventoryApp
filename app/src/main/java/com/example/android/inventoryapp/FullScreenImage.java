@@ -33,12 +33,12 @@ public class FullScreenImage extends Activity {
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                FullScreenImage.this.finish();
+                finish();
             }
         });
-        Intent callingActivityIntent = getIntent();
-        if (callingActivityIntent != null) {
-            Uri imageUri = callingActivityIntent.getData();
+        Intent intent = getIntent();
+        if (intent != null) {
+            Uri imageUri = intent.getData();
             if (imageUri != null && imageView != null) {
                 Glide.with(this).load(imageUri).into(imageView);
             }

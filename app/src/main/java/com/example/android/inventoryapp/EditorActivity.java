@@ -53,7 +53,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public static final String LOG_TAG = "EditorActivity";
 
     private boolean mItemHasChanged = false;
-    private boolean zoomOut =  false;
+    private boolean zoomOut = false;
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -97,11 +97,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             @Override
             public void onClick(View view) {
-                if(zoomOut) {
+                if (zoomOut) {
                     imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     imageView.setAdjustViewBounds(true);
-                    zoomOut =false;
-                }else{
+                    zoomOut = false;
+                } else {
                     imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                     imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                     zoomOut = true;
@@ -246,6 +246,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
         finish();
     }
+
     private void showUnsavedChangesDialog(DialogInterface.OnClickListener discardButtonClickListener) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -345,11 +346,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
-                if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    galleryIntent();
-                }
+        if (requestCode == PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
+            if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                galleryIntent();
             }
         }
     }

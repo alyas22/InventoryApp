@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public void fullScreenImage(Uri image) {
 
-        Intent fullScreenIntent = new Intent(this, FullScreenImage.class);
-        fullScreenIntent.setData(image);
-        startActivity(fullScreenIntent);
+        Intent intent = new Intent(this, FullScreenImage.class);
+        intent.setData(image);
+        startActivity(intent);
 
     }
 
