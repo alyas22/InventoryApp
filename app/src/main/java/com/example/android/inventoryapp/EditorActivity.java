@@ -33,8 +33,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.android.inventoryapp.data.Contract.InventoryEntry;
 
-import static com.example.android.inventoryapp.R.drawable.ic_photo;
-
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -44,6 +42,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     ImageView imageView, addQuantity, removeQuantity;
     Button imageButton;
     private Uri mCurrentItemUri;
+    Uri mProductPhotoUri;
     private String image1 = "none";
     private static final int EXISTING_INVENTORY_LOADER = 0;
     private static final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 11;
@@ -206,16 +205,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String nameString = mNameEditText.getText().toString().trim();
         String quantityString = mQuantityEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
+      ;
 
         if (mCurrentItemUri == null) {
-            if (TextUtils.isEmpty(nameString) || TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(priceString)) {
+            if (TextUtils.isEmpty(nameString) || TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(priceString) || mProductPhotoUri == null) {
                 Toast.makeText(this, "Missing fields", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_NAME, nameString);
-        values.put(InventoryEntry.COLUMN_IMAGE, image1);
+        values.put(InventoryEntry.COLUMN_IMAGE, mProductPhotoUri.toString());
 
         int price = 0;
         if (!TextUtils.isEmpty(priceString)) {
@@ -269,7 +269,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                deletePet();
+                deleteItem();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -283,7 +283,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         alertDialog.show();
     }
 
-    private void deletePet() {
+    private void deleteItem() {
         if (mCurrentItemUri != null) {
             int rowsDeleted = getContentResolver().delete(mCurrentItemUri, null, null);
             if (rowsDeleted == 0) {
@@ -377,17 +377,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
 
-        if (requestCode == PICK_PICTURE_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                Uri mProductPhotoUri = resultData.getData();
-                image1 = mProductPhotoUri.toString();
+        if (requestCode == PICK_PICTURE_REQUEST && resultCode == Activity.RESULT_OK ){
+                mProductPhotoUri = resultData.getData();
+//                image1 = mProductPhotoUri.toString();
                 if (resultData != null) {
-                    Glide.with(this).load(mProductPhotoUri).placeholder(ic_photo).error(ic_photo)
+                    Glide.with(this).load(mProductPhotoUri)
                             .crossFade().centerCrop().into(imageView);
                 }
+                }else if (requestCode == PICK_PICTURE_REQUEST){
+                Toast.makeText(this, "Missing ", Toast.LENGTH_SHORT).show();
             }
         }
-    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -422,12 +422,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int price = cursor.getInt(priceColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);
             image1 = cursor.getString(imageColumnIndex);
+            mProductPhotoUri = Uri.parse(image1);
+
 
             mNameEditText.setText(Name);
             mPriceEditText.setText(String.valueOf(price));
             mQuantityEditText.setText(String.valueOf(quantity));
-            Glide.with(this).load(image1).placeholder(ic_photo).error(ic_photo)
+            Glide.with(this).load(mProductPhotoUri)
                     .crossFade().centerCrop().into(imageView);
+//            .placeholder(ic_photo).error(ic_photo)
         }
     }
 
@@ -436,6 +439,5 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mNameEditText.setText("");
         mPriceEditText.setText("");
         mQuantityEditText.setText("");
-        imageView.setImageResource(R.drawable.ic_photo);
     }
 }

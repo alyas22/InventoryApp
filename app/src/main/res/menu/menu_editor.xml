@@ -12,8 +12,8 @@
 
     <item
         android:id="@+id/action_order_item"
-        android:title="menu_order_item"/>
+        android:title="@string/menu_order_item"/>
     <item
         android:id="@+id/action_delete_item"
-        android:title="menu_delete_item"/>
+        android:title="@string/menu_delete_item"/>
 </menu>
